@@ -1,263 +1,170 @@
-# 🛡️ AI SOC Email Threat Analyzer
+# AI SOC Email Threat Analyzer
 
-An advanced AI-powered phishing detection system that combines machine learning with rule-based threat detection to analyze email content and identify potential security threats. Features MITRE ATT&CK mapping, IOC extraction, and confidence-based risk assessment.
+An AI-assisted phishing email analysis application that combines machine learning classification with rule-based threat indicators to help identify suspicious email content.
 
-## 📋 Overview
+The application uses a React frontend and a FastAPI backend to analyse email text and present a structured security assessment.
 
-**AI SOC Email Threat Analyzer** is a comprehensive email security solution that leverages:
-- **Machine Learning** - TF-IDF vectorization + Logistic Regression for phishing classification
-- **Rule-Based Detection** - Advanced pattern matching for threat indicators
-- **SOC-Style Analysis** - Professional threat assessment with MITRE ATT&CK mapping
-- **Real-Time Processing** - Instant email analysis with detailed reasoning
+**Repository:** [ai-phishing-detector](https://github.com/sadath-shah/ai-phishing-detector)
 
-## ✨ Key Features
+## Features
 
-### 🤖 Machine Learning Analysis
-- TF-IDF feature extraction from email content
-- Logistic Regression classification (Legitimate vs. Phishing)
-- Confidence scoring based on model probabilities
-- High accuracy threat detection
+- **Machine learning classification:** Uses TF-IDF text features and a scikit-learn Logistic Regression classifier to distinguish legitimate emails from potential phishing emails.
+- **Rule-based threat analysis:** Examines email content for suspicious keywords, urgency patterns, impersonation indicators and credential-harvesting language.
+- **Risk assessment:** Presents a classification, risk score, severity level and confidence information based on the implemented analysis logic.
+- **IOC extraction:** Identifies supported indicators such as URLs, email addresses and IP addresses in the submitted content.
+- **MITRE ATT&CK mapping:** Associates relevant detection findings with applicable phishing-related techniques where supported by the implemented rules.
+- **Web interface:** Provides a React-based interface for submitting email content and reviewing analysis results.
+- **API integration:** Uses FastAPI to expose the analysis functionality to the frontend.
 
-### 🔍 Advanced Threat Detection
-- **Keyword Analysis** - Detects phishing-related keywords (urgent, verify, password, etc.)
-- **URL/Email/IP Detection** - Extracts and flags indicators of compromise
-- **Urgency + Threat Patterns** - Identifies time-pressure tactics combined with account threats
-- **Credential Harvesting** - Detects attempts to collect login credentials
-- **Impersonation Detection** - Identifies trusted organization spoofing
-- **Financial Targeting** - Flags banking and payment-related threats
+## Technology Stack
 
-### 🎯 MITRE ATT&CK Mapping
-- T1566 - Phishing
-- T1566.002 - Spearphishing Link
-- T1056.003 - Web Portal Capture
+| Component | Technologies |
+|---|---|
+| Frontend | React, Vite, JavaScript, CSS |
+| Backend | Python, FastAPI |
+| Machine Learning | scikit-learn, TF-IDF, Logistic Regression |
+| Data Processing | pandas |
+| Model Persistence | joblib |
+| API Communication | REST API, Axios |
 
-### 📊 Comprehensive Reporting
-- Final classification (Safe, Suspicious, Phishing)
-- Risk score (0-10 scale)
-- Severity levels (Low, Medium, High)
-- Confidence percentage
-- Detection reasons with explanations
-- Indicators of Compromise (URLs, emails, IPs)
-- ML prediction details
+## Architecture
 
-## 🏗️ Architecture
+1. **Input:** The user submits email content through the React interface.
+2. **API:** The frontend sends the content to the FastAPI backend for analysis.
+3. **ML analysis:** The trained model and TF-IDF vectorizer process the email and generate a classification.
+4. **Rule-based analysis:** The implemented detection rules examine suspicious patterns and extract supported indicators.
+5. **Results:** The application returns the available analysis findings for display in the frontend.
 
-### Backend (FastAPI)
-```
-Backend/
-├── main.py              # FastAPI server with /analyze endpoint
-├── train_model.py       # Model training pipeline
-├── prepare_data.py      # Data preparation utilities
-├── requirements.txt     # Python dependencies
-└── [empty modules]      # Placeholder for future features
-```
+## Project Structure
 
-**Tech Stack:**
-- FastAPI - Web framework
-- scikit-learn - ML pipeline
-- pandas - Data processing
-- joblib - Model serialization
-- TF-IDF Vectorizer - Feature extraction
-- Logistic Regression - Classification
+The repository contains separate backend, frontend, data and model directories.
 
-### Frontend (React + Vite)
-```
-Frontend/
-├── src/
-│   ├── components/
-│   │   ├── UploadForm.jsx      # Email input interface
-│   │   ├── ResultCard.jsx      # Analysis results display
-│   │   ├── Navbar.jsx          # Navigation
-│   │   ├── Charts.jsx          # Analytics (placeholder)
-│   │   └── IOCSection.jsx      # IOC display (placeholder)
-│   ├── pages/
-│   │   ├── Home.jsx            # Main dashboard
-│   │   ├── Analysis.jsx        # Analysis page (placeholder)
-│   │   └── Dashboard.jsx       # Dashboard (placeholder)
-│   ├── App.jsx                 # Main app component
-│   ├── App.css                 # Component styling
-│   └── index.css               # Global styles
-└── [config files]
-```
+- `backend/` — API and analysis logic
+- `frontend/` — React user interface
+- `data/` — Dataset files used by the project
+- `models/` — Saved machine learning artefacts
 
-**Tech Stack:**
-- React 19+ - UI framework
-- Vite - Build tool
-- Axios - HTTP client
-- CSS3 - Styling with dark theme
+Consult the actual repository files for the complete structure.
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-- Python 3.9+
-- Node.js 16+
-- npm or yarn
 
-### Backend Setup
+- Python 3.9 or a compatible version supported by the backend dependencies
+- Node.js and npm
+- Git
+
+### 1. Clone the repository
 
 ```bash
-# Navigate to backend
-cd backend
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Train the model (if needed)
-python train_model.py
-
-# Start the server
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+git clone https://github.com/sadath-shah/ai-phishing-detector.git
+cd ai-phishing-detector
 ```
 
-Backend runs on: `http://localhost:8000`
-
-### Frontend Setup
+### 2. Set up the backend
 
 ```bash
-# Navigate to frontend
+cd backend
+python -m venv .venv
+```
+
+Activate the virtual environment.
+
+macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+Install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+If the saved model artefacts need to be regenerated, follow the repository's model-training instructions and run the training script:
+
+```bash
+python train_model.py
+```
+
+Start the API:
+
+```bash
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+The backend should be available at `http://127.0.0.1:8000`.
+
+FastAPI's interactive API documentation is normally available at `http://127.0.0.1:8000/docs` when enabled.
+
+### 3. Set up the frontend
+
+Open another terminal:
+
+```bash
 cd frontend
-
-# Install dependencies
 npm install
+```
 
-# Set API URL in .env
-echo "VITE_API_URL=http://localhost:8000" > .env
+Configure the frontend API URL in a `.env` file:
 
-# Start dev server
+```env
+VITE_API_URL=http://127.0.0.1:8000
+```
+
+Start the frontend:
+
+```bash
 npm run dev
 ```
 
-Frontend runs on: `http://localhost:5173`
+Open the local development URL printed by Vite.
 
-## 📖 Usage
+**Note:** Verify the actual environment-variable name and backend configuration in the repository before following these commands. The saved model files and required dependencies must be available for analysis to work.
 
-1. **Paste Email Content** - Copy and paste suspicious email content
-2. **Click Analyze** - Send email for threat analysis
-3. **View Results** - Get comprehensive security assessment including:
-   - Classification (Safe/Suspicious/Phishing)
-   - Risk score and severity
-   - ML model prediction
-   - Detection reasons
-   - MITRE ATT&CK mapping
-   - Indicators of compromise
+## Model Evaluation
 
-## 📊 Analysis Output
+The project includes a machine learning classification pipeline. Model quality should be evaluated on a held-out test dataset that is separate from the training data.
 
-### Response Format
-```json
-{
-  "classification": "Phishing",
-  "confidence": "92.45%",
-  "severity": "High",
-  "riskScore": "9/10",
-  "reasons": [
-    "Suspicious keywords detected: urgent, verify, click",
-    "Suspicious URL detected (1 URL(s))",
-    "ML model detected phishing (95.23% confidence)",
-    "Urgency combined with account threat"
-  ],
-  "mitre": [
-    "T1566 - Phishing",
-    "T1566.002 - Spearphishing Link"
-  ],
-  "urls": ["http://malicious-site.com/login"],
-  "emails": ["attacker@fake-bank.com"],
-  "ips": ["192.168.1.1"],
-  "mlPrediction": "Phishing",
-  "mlConfidence": "95.23%"
-}
-```
+Useful evaluation measures include:
 
-## 🎨 UI Features
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion matrix
 
-- **Dark Theme** - Professional SOC-style interface
-- **Real-Time Analysis** - Instant email processing
-- **Visual Risk Meter** - Color-coded risk assessment
-- **Animated Components** - Smooth transitions and effects
-- **Responsive Design** - Works on desktop and tablet
-- **Error Handling** - Clear error messages and guidance
-- **Loading States** - User feedback during analysis
+Evaluation results should be added here only after running and documenting a reproducible test.
 
-## 📈 Model Performance
+## Limitations
 
-The ML model is trained on the CEAS_08 dataset:
-- **Accuracy**: ~95%
-- **Precision**: High
-- **Recall**: Balanced
-- **F1-Score**: Strong
+- The application provides automated analysis to support investigation; its output is not proof that an email is malicious or safe.
+- Machine learning predictions and rule-based findings can produce false positives and false negatives.
+- MITRE ATT&CK mappings describe relevant techniques and do not independently confirm an attack.
+- Evaluation performance depends on the dataset, preprocessing and evaluation methodology.
 
-Hybrid Approach:
-- 60% weight: Rule-based indicators
-- 40% weight: ML model prediction
-- Conflict detection: Flags when ML and rules disagree
+## Future Improvements
 
-## 🔐 Security Features
+Potential areas for further development include:
 
-- CORS enabled for frontend communication
-- Input validation (max 50KB email size)
-- Error handling without exposing internals
-- Safe regex patterns for IOC extraction
-- No sensitive data storage
+- Reproducible model evaluation and comparison
+- Expanded test coverage
+- Additional analysis and reporting features
+- API rate limiting and stronger deployment controls
+- Further improvements to the analysis interface
 
-## 📚 Dataset
+These are proposed improvements, not claims of existing functionality.
 
-The model is trained on:
-- **CEAS_08.csv** - Email classification dataset
-- **64.76 MB** - 1000+ labeled emails
-- Binary classification: Legitimate vs. Phishing
+## Author
 
-## 🛠️ Future Enhancements
+**Mohammed Sadath Shah**
 
-- [ ] Advanced charts and analytics dashboard
-- [ ] Email attachment analysis
-- [ ] Browser extension
-- [ ] API rate limiting
-- [ ] User authentication
-- [ ] Email history logging
-- [ ] Custom rule builder
-- [ ] Gemini AI explanations
-- [ ] PDF report generation
-
-## 📝 Code Quality
-
-✅ **All comments removed** for clean, production-ready code  
-✅ **Self-documenting** with clear naming conventions  
-✅ **Modular structure** for easy maintenance  
-✅ **Type hints** in backend (Pydantic models)  
-✅ **Error handling** throughout  
-
-## 🤝 Contributing
-
-Contributions welcome! Areas for improvement:
-1. Enhanced ML models
-2. Additional threat patterns
-3. UI/UX enhancements
-4. Performance optimization
-5. Test coverage
-
-## 📄 License
-
-MIT License - feel free to use and modify
-
-## 👤 Author
-
-**Mohammed Sadath Shah**  
-GitHub: [@sadath-shah](https://github.com/sadath-shah)
-
-## 📧 Contact & Support
-
-For questions or issues:
-- Open a GitHub issue
-- Check existing documentation
-- Review the code comments in complex sections
-
-## 🔗 Links
-
-- [GitHub Repository](https://github.com/sadath-shah/ai-phishing-detector)
-- [MITRE ATT&CK Framework](https://attack.mitre.org/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [React Documentation](https://react.dev/)
-
----
-
-**Built with ❤️ for cybersecurity professionals**
+- GitHub: [sadath-shah](https://github.com/sadath-shah)
+- Project: [AI SOC Email Threat Analyzer](https://github.com/sadath-shah/ai-phishing-detector)
